@@ -1,0 +1,6 @@
+export { default as MyHeader } from './MyHeader'
+export { default as IconText } from './IconText'
+export { default as IconTitle } from './IconTitle'
+export { default as Info } from './Info'
+export { default as RecentlyShare } from './RecentlyShare'
+export { default as Tocify } from './Tocify/index.tsx'

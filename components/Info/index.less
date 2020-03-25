@@ -1,0 +1,47 @@
+.author-container {
+
+  .author-avatar {
+    img {
+      transition: all .3s ease;
+      &:hover {
+        transform: scale(1.1);
+        filter: contrast(120%);
+      }
+    }
+  }
+
+  .author-introduction {
+    margin-bottom: .8rem;
+
+    .author-name {
+      color: #2db7f5;
+      font-size: 1.2rem;
+      margin-bottom: .5rem;
+    }
+    
+    .author-desc {
+      color: #999;
+      font-size: .8rem;
+      margin-bottom: .5rem;
+    }
+
+    .author-label {
+      margin-bottom: .5rem;
+
+      span {
+        transition: all .6s ease;
+        border-radius: 2px;
+
+        &:hover {
+          transform: translate3d(5px, 0, 0);
+        }
+      }
+    }
+
+    .author-account {
+      display: flex;
+      padding: 0 10px;
+      justify-content: space-around;
+    }
+  }
+}
