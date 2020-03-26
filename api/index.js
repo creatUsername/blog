@@ -15,6 +15,10 @@ const servicePath = {
   getTypeInfo: BASE_URI + 'getTypeInfo',
   // 点赞 By id
   addLike: BASE_URI + 'addArticleLikeById/',
+  // 获取评论列表 By id
+  getCommentListById: BASE_URI + 'getCommentListById/',
+  // 评论 By id
+  addCommentById: BASE_URI + 'addCommentById',
 }
 
 export default servicePath

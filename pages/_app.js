@@ -4,6 +4,7 @@ import '../static/styles/common.less'
 import Router from 'next/router'
 import NProgress from 'nprogress'
 import '../static/styles/nprogress.less'
+import moment from '../utils/moment-locale'
 
 Router.onRouteChangeStart = url => {
   NProgress.start();

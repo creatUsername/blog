@@ -15,10 +15,6 @@ const menus = [
   {
     title: '关于我',
     path: '/about'
-  },
-  {
-    title: '留言板',
-    path: '/message'
   }
 ]
 

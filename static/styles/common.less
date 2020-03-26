@@ -88,7 +88,11 @@ body {
 .about-container {
   min-height: calc(100vh - 80px);
   background-color: #fff;
-  padding: 20px 10px;
+
+  .about-item {
+    background-color: #fff;
+    padding: .7rem 0 .5rem;
+  }
 
   .about-box {
     position: relative;
@@ -201,5 +205,12 @@ body {
         text-align: center;
       }
     }
+  }
+}
+
+.comment-list {
+  .ant-comment-inner {
+    max-width: 100%;
+    padding-left: 10px;
   }
 }

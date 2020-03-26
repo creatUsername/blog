@@ -1,7 +1,8 @@
 import Head from 'next/head'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { BackTop, Row, Col, Breadcrumb, Tag, Affix, Tooltip, message } from 'antd'
-import { MyHeader, IconTitle, RecentlyShare, IconText, Tocify } from '../../components'
+import { MyHeader, IconTitle, RecentlyShare, IconText, Tocify, DetailMessage } from '../../components'
 import { StarTwoTone, BookOutlined, LikeTwoTone, EyeOutlined, UserOutlined, LikeOutlined } from '@ant-design/icons'
 import MyLayout from '../../layouts'
 import { SwitchTagColor, SwitchTagName } from '../../utils/tags'
@@ -10,20 +11,21 @@ import hljs from 'highlight.js'
 import '../../static/styles/highlight.less'
 import Axios from 'axios'
 import servicePath from '../../api'
+import moment from 'moment'
+import { withRouter } from 'next/router'
 
-const Detail = ({ data }) => {
+const Detail = (props) => {
+  const { data, id } = props
+  const [messageList, setMessageList] = useState([{ name: 'blue', date: moment().subtract(1, 'hours'), message: '欢迎来到我的博客，留下您宝贵的意见和建议！' }])
   const { article_content, view_count, liked } = data
   const tocify = new Tocify()
   const renderer = new Marked.Renderer()
-  renderer.heading = function(text, level, raw) {
+  renderer.heading = function (text, level, raw) {
     const anchor = tocify.add(text, level)
     return `<a id="${anchor}" href="#${anchor}" class="anchor-fix"><h${level}>${text}</h${level}></a>\n`
   }
-
   Marked.setOptions({
-
     renderer: renderer,
-
     gfm: true,
     pedantic: false,
     sanitize: false,
@@ -33,11 +35,11 @@ const Detail = ({ data }) => {
     smartypants: false,
 
     highlight: function (code) {
-            return hljs.highlightAuto(code).value;
+      return hljs.highlightAuto(code).value;
     }
 
-  }); 
-  
+  });
+
   const markdown = Marked(article_content)
 
   const addLike = () => {
@@ -45,6 +47,15 @@ const Detail = ({ data }) => {
       .then(res => {
         message.success('感谢您的支持!我会继续努力的...')
       })
+  }
+
+  useEffect(() => {
+    updateList()
+  }, [id])
+
+  const updateList = () => {
+    Axios.get(servicePath.getCommentListById + id)
+      .then(res => setMessageList(res.data.data))
   }
 
   return (
@@ -71,7 +82,9 @@ const Detail = ({ data }) => {
                   <LikeTwoTone onClick={() => addLike()} twoToneColor="#F56C6C" />
                 </Tooltip>
                 <Tooltip title="点击收藏下次就不会找不到了">
-                  <StarTwoTone twoToneColor="#E6A23C" />
+                  <a href="#comment-form" style={{ textAlign: 'center' }}>
+                    <StarTwoTone twoToneColor="#E6A23C" />
+                  </a>
                 </Tooltip>
               </div>
             </Affix>
@@ -111,8 +124,9 @@ const Detail = ({ data }) => {
               </div>
               <div
                 className="markdown-content"
-                dangerouslySetInnerHTML={{__html: markdown}}
+                dangerouslySetInnerHTML={{ __html: markdown }}
               ></div>
+              <DetailMessage message={messageList} updateList={updateList} />
             </div>
           </Col>
           <Col
@@ -130,7 +144,7 @@ const Detail = ({ data }) => {
                   <div
                     className="article-menu"
                   >
-                    { tocify && tocify.render() }
+                    {tocify && tocify.render()}
                   </div>
                 </div>
                 <RecentlyShare />
@@ -153,8 +167,9 @@ Detail.getInitialProps = async (context) => {
   })
 
   return {
-    data: await promise
+    data: await promise,
+    id
   }
 }
 
-export default Detail
+export default withRouter(Detail)
